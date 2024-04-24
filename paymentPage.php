@@ -4,9 +4,9 @@
 	$scbAuthDatas = scbAuth();
 	$scbAccessToken = $scbAuthDatas['data']['accessToken'];
 	$amount = 100;
-	$refCode = "REFCODE1001";
-	$refCode2 = "REFCODE2001";
-	$refCode3 = "REFCODE3001";
+	$refCode = "IFINNREF1003";
+	$refCode2 = "IFINNREF2001";
+	$refCode3 = "IFINNREF3001";
 	$scbQRCode = genSCBQR($scbAccessToken,$amount,$refCode,$refCode2,$refCode3);
   // var_dump($scbQRCode);
   // exit;
@@ -68,22 +68,24 @@
 	// $( document ).ready(function() {
 	// 	console.log("<?php echo $refCode; ?>");
 	// });
+    function transition() {
+      console.log("<?php echo $refCode; ?>");
 
-  setTimeout(function() { 
-      // window.location.href='/paymentSuccess.php';
-    $.ajax({
-      method: "POST",
-      url: "https://cubic-florentine-lemonade.glitch.me/apiBackend.php",
-      data: {}
-    })
+      $.ajax({
+        method: "POST",
+        url: "https://cubic-florentine-lemonade.glitch.me/apiBackend.php",
+        data: { "spred_sheet_id" : "1OA9nbfISpu4f-xzTJEu15N2NOhB-5gcXBOTkuMuQQp0", "refcode1" : "<?php echo $refCode; ?>" }
+      })
       .done(function( resp ) {
-        var obj = JSON.parse(resp)
-        if(obj.status == 'success'){
-          window.location.href='/paymentSuccess.php';
-        }
-        // console.log(obj);
-    });
-  }, 5000);
+          var obj = JSON.parse(resp)
+          if(obj.is_find == 1){
+            window.location.href='/paymentSuccess.php';
+          }
+          console.log(obj);
+      });
+
+  }
+  setInterval(transition, 5000);
 </script>
 
 <!-- <script>
